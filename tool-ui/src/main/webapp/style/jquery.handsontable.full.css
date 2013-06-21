@@ -201,7 +201,6 @@ textarea.handsontableInput {
   font-family: Arial, Helvetica, sans-serif; /*repeat from .handsontable (inherit doesn't work with IE<8) */
   line-height: 1.3em; /*repeat from .handsontable (inherit doesn't work with IE<8) */
   font-size: 13px;
-  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.4);
   resize: none;
 
   /*below are needed to overwrite stuff added by jQuery UI Bootstrap theme*/
@@ -286,9 +285,6 @@ NumericRenderer
   border-color: rgba(0, 0, 0, 0.2);
   border-style: solid;
   border-width: 1px;
-  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
   -webkit-border-radius: 4px;
@@ -384,12 +380,6 @@ ul.context-menu-list li {
     
     border: 1px solid #DDD;
     background: #EEE;
-    
-    -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-       -moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-        -ms-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-         -o-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
     
     font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 11px;

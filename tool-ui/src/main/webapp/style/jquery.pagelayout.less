@@ -172,26 +172,8 @@
 
         // Subtle pattern for shared sections.
         &.shared {
-            background-image: -webkit-gradient(
-                linear,
-                left top,
-                right bottom,
-                color-stop(0, transparent),
-                color-stop(0.25, transparent),
-                color-stop(0.25, rgba(0, 0, 0, 0.04)),
-                color-stop(0.5, rgba(0, 0, 0, 0.04)),
-                color-stop(0.5, transparent),
-                color-stop(0.75, transparent),
-                color-stop(0.75, rgba(0, 0, 0, 0.04)),
-                color-stop(1.0, rgba(0, 0, 0, 0.04))
-            );
-            background: -moz-repeating-linear-gradient(
-                left top -45deg,
-                transparent,
-                transparent 23px,
-                rgba(0, 0, 0, 0.07) 23px,
-                rgba(0, 0, 0, 0.07) 46px
-            ) repeat scroll 0 0 transparent;
+
+            background:repeat scroll 0 0 transparent;
             -webkit-background-size: 5em 5em;
         }
 

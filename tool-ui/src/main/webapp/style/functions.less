@@ -4,18 +4,6 @@
     background-clip: @clip;
 }
 
-.background-image-linear-gradient(@gradient) {
-    background-image: -moz-linear-gradient(@gradient);
-    background-image: -ms-linear-gradient(@gradient);
-    background-image: -o-linear-gradient(@gradient);
-    background-image: -webkit-linear-gradient(@gradient);
-}
-
-.background-image-vertical-gradient(@from, @to) {
-    background: ((@from + @to) / 2);
-    .background-image-linear-gradient(~'top, @{from}, @{to}');
-}
-
 .border-radius(@radius) {
     -moz-border-radius: @radius;
     -webkit-border-radius: @radius;
@@ -44,12 +32,6 @@
     -moz-border-radius-bottomright: @radius;
     -webkit-border-bottom-right-radius: @radius;
     border-bottom-right-radius: @radius;
-}
-
-.box-shadow(@shadow) {
-    -moz-box-shadow: @shadow;
-    -webkit-box-shadow: @shadow;
-    box-shadow: @shadow;
 }
 
 .box-sizing(@sizing) {
