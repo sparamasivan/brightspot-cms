@@ -54,6 +54,7 @@ public class Search extends Record {
     public static final String ONLY_PATHED_PARAMETER = "p";
     public static final String PARENT_PARAMETER = "pt";
     public static final String QUERY_STRING_PARAMETER = "q";
+    public static final String RETURN_QUERY_PARAMETER = "rq";
     public static final String SELECTED_TYPE_PARAMETER = "st";
     public static final String SHOW_DRAFTS_PARAMETER = "d";
     public static final String SHOW_MISSING_PARAMETER = "m";
@@ -76,6 +77,7 @@ public class Search extends Record {
     private boolean onlyPathed;
     private String additionalPredicate;
     private String advancedQuery;
+    private boolean returnQuery;
     private UUID parentId;
     private Map<String, String> globalFilters;
     private Map<String, Map<String, String>> fieldFilters;
@@ -144,6 +146,7 @@ public class Search extends Record {
         setOnlyPathed(page.param(boolean.class, IS_ONLY_PATHED));
         setAdditionalPredicate(page.param(String.class, ADDITIONAL_QUERY_PARAMETER));
         setAdvancedQuery(page.param(String.class, ADVANCED_QUERY_PARAMETER));
+        setReturnQuery(page.param(boolean.class, RETURN_QUERY_PARAMETER));
         setParentId(page.param(UUID.class, PARENT_PARAMETER));
         setSort(page.param(String.class, SORT_PARAMETER));
         setShowDrafts(page.param(boolean.class, SHOW_DRAFTS_PARAMETER));
@@ -222,6 +225,14 @@ public class Search extends Record {
 
     public void setAdvancedQuery(String advancedQuery) {
         this.advancedQuery = advancedQuery;
+    }
+
+    public boolean isReturnQuery() {
+        return returnQuery;
+    }
+
+    public void setReturnQuery(boolean returnQuery) {
+        this.returnQuery = returnQuery;
     }
 
     public UUID getParentId() {
@@ -662,10 +673,12 @@ public class Search extends Record {
             Set<String> comparisonKeys = new HashSet<String>();
             DatabaseEnvironment environment = Database.Static.getDefault().getEnvironment();
 
-            addVisibilityFields(comparisonKeys, environment);
+            if (!isReturnQuery()) {
+                addVisibilityFields(comparisonKeys, environment);
 
-            for (ObjectType type : environment.getTypes()) {
-                addVisibilityFields(comparisonKeys, type);
+                for (ObjectType type : environment.getTypes()) {
+                    addVisibilityFields(comparisonKeys, type);
+                }
             }
 
             for (String key : comparisonKeys) {

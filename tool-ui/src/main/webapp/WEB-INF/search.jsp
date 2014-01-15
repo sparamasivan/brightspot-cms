@@ -170,6 +170,7 @@ writer.start("div", "class", "searchForm");
 
                 writer.tag("input", "type", "hidden", "name", Search.IS_ONLY_PATHED, "value", search.isOnlyPathed());
                 writer.tag("input", "type", "hidden", "name", Search.ADDITIONAL_QUERY_PARAMETER, "value", search.getAdditionalPredicate());
+                writer.tag("input", "type", "hidden", "name", Search.RETURN_QUERY_PARAMETER, "value", search.isReturnQuery());
                 writer.tag("input", "type", "hidden", "name", Search.PARENT_PARAMETER, "value", search.getParentId());
                 writer.tag("input", "type", "hidden", "name", Search.SUGGESTIONS_PARAMETER, "value", search.isSuggestions());
 
@@ -206,6 +207,7 @@ writer.start("div", "class", "searchForm");
 
                 writer.tag("input", "type", "hidden", "name", Search.IS_ONLY_PATHED, "value", search.isOnlyPathed());
                 writer.tag("input", "type", "hidden", "name", Search.ADDITIONAL_QUERY_PARAMETER, "value", search.getAdditionalPredicate());
+                writer.tag("input", "type", "hidden", "name", Search.RETURN_QUERY_PARAMETER, "value", search.isReturnQuery());
                 writer.tag("input", "type", "hidden", "name", Search.PARENT_PARAMETER, "value", search.getParentId());
                 writer.tag("input", "type", "hidden", "name", Search.SUGGESTIONS_PARAMETER, "value", search.isSuggestions());
                 writer.tag("input", "type", "hidden", "name", Search.OFFSET_PARAMETER, "value", search.getOffset());
@@ -447,7 +449,7 @@ writer.start("div", "class", "searchForm");
 
         writer.end();
 
-        if (!ObjectUtils.isBlank(newJsp)) {
+        if (!ObjectUtils.isBlank(newJsp) && !search.isReturnQuery()) {
             writer.start("div", "class", "searchCreate");
                 writer.start("h2").html("Create").end();
 

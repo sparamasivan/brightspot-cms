@@ -4,6 +4,7 @@ com.psddev.cms.db.Content,
 com.psddev.cms.db.ToolUi,
 com.psddev.cms.tool.ToolPageContext,
 
+com.psddev.dari.db.Database,
 com.psddev.dari.db.ObjectField,
 com.psddev.dari.db.ObjectFieldComparator,
 com.psddev.dari.db.State,
@@ -41,6 +42,26 @@ if (validTypes.size() == 1) {
         fieldValueType = type;
         break;
     }
+}
+
+boolean isQuery = false;
+ObjectType queryObjectType = Database.Static.getDefault().getEnvironment().getTypeByClass(Query.class);
+if (field != null && field.getTypes().contains(queryObjectType)) {
+    isQuery = true;
+}
+
+ObjectType internalType = null;
+if (isQuery) {
+    for (ObjectType t : field.getTypes()) {
+        if (!Query.class.equals(t.getObjectClass())) {
+            internalType = t;
+            break;
+        }
+    }
+}
+
+if (isQuery) {
+    fieldValueType = queryObjectType;
 }
 
 boolean isEmbedded = field.isEmbedded() || (fieldValueType != null && fieldValueType.isEmbedded());
@@ -83,8 +104,24 @@ if (fieldValue == null && isEmbedded) {
     }
 }
 
+String predicate = null;
+if (isQuery) {
+    if (fieldValue instanceof Query && ((Query<?>) fieldValue).getPredicate() != null) {
+        predicate = ((Query<?>) fieldValue).getPredicate().toString();
+    } else {
+        fieldValue = Query.fromType(internalType);
+    }
+}
+
 if ((Boolean) request.getAttribute("isFormPost")) {
-    if (isEmbedded) {
+    if (isQuery) {
+        if (fieldValue instanceof Query) {
+            fieldValue = Query.fromType(internalType);
+            predicate = wp.param(String.class, inputName);
+            ((Query<?>) fieldValue).and(predicate);
+            state.putByPath(fieldName, fieldValue);
+        }
+    } else if (isEmbedded) {
         if (fieldValue != null) {
             State fieldValueState = State.getInstance(fieldValue);
             fieldValueState.setId(id);

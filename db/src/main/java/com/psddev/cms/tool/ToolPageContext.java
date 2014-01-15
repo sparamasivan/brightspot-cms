@@ -1612,6 +1612,11 @@ public class ToolPageContext extends WebPageContext {
             writeEnd();
 
         } else {
+            boolean isQuery = false;
+            ObjectType queryObjectType = Database.Static.getDefault().getEnvironment().getTypeByClass(Query.class);
+            if (field.getTypes().contains(queryObjectType)) {
+                isQuery = true;
+            }
             State state = State.getInstance(value);
             StorageItem preview = value != null ? state.getPreview() : null;
             String previewUrl = null;
@@ -1630,26 +1635,38 @@ public class ToolPageContext extends WebPageContext {
             }
 
             for (ObjectType type : field.getTypes()) {
-                typeIds.append(type.getId());
-                typeIds.append(',');
+                if (!type.equals(queryObjectType)) {
+                    typeIds.append(type.getId());
+                    typeIds.append(',');
+                }
             }
 
             if (typeIds.length() > 0) {
                 typeIds.setLength(typeIds.length() - 1);
             }
 
+            String dataLabel = null;
+            if (isQuery) {
+                if (value instanceof Query && ((Query) value).getPredicate() != null) {
+                    dataLabel = ((Query) value).getPredicate().toString();
+                }
+            } else {
+                dataLabel = value != null ? getObjectLabel(value) : null;
+            }
+
             writeTag("input",
                     "type", "text",
                     "class", "objectId",
                     "data-additional-query", field.getPredicate(),
-                    "data-label", value != null ? getObjectLabel(value) : null,
+                    "data-label", dataLabel,
                     "data-pathed", ToolUi.isOnlyPathed(field),
                     "data-preview", previewUrl,
                     "data-searcher-path", ui.getInputSearcherPath(),
-                    "data-suggestions", ui.isEffectivelySuggestions(),
+                    "data-suggestions", (ui.isEffectivelySuggestions() && !isQuery),
                     "data-typeIds", typeIds,
                     "data-visibility", value != null ? state.getVisibilityLabel() : null,
-                    "value", value != null ? state.getId() : null,
+                    "data-return-query", isQuery,
+                    "value", isQuery ? dataLabel : (value != null ? state.getId() : null),
                     "placeholder", placeholder,
                     attributes);
         }

@@ -148,6 +148,7 @@ $.plugin2('objectId', {
                     '&p=' + encodeURIComponent($input.attr('data-pathed')) +
                     '&' + (typeIds ? $.map(typeIds.split(','), function(typeId) { return 'rt=' + typeId; }).join('&') : '') +
                     '&aq=' + encodeURIComponent($input.attr('data-additional-query') || '') +
+                    '&rq=' + encodeURIComponent($input.attr('data-return-query') || '') +
                     '&sg=' + encodeURIComponent($input.attr('data-suggestions') || '')
         });
 
@@ -169,6 +170,10 @@ $.plugin2('objectId', {
                 });
             }
         });
+
+        if ($input.attr('data-return-query') == 'true') {
+            $edit = $('<a/>');
+        }
 
         $clear = $('<a/>', {
             'class': 'objectId-clear',

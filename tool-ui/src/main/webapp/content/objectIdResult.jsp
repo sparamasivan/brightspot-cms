@@ -37,8 +37,24 @@ String removeId = wp.createId();
             writer.end();
         }
     }.render(); %>
+
+    <%
+    if (search.isReturnQuery()) {
+        wp.writeStart("div", "class", "actions");
+            wp.writeStart("button",
+                    "id", wp.createId(),
+                    "class", "icon icon-action-search",
+                    "name", "action-search",
+                    "value", true);
+                wp.writeHtml("Search");
+            wp.writeEnd();
+        wp.writeEnd();
+    }
+    %>
+
 </div>
 
+<%if (!search.isReturnQuery()) {%>
 <script type="text/javascript">
     if (typeof jQuery !== 'undefined') (function(win, $) {
         var $win = $(win),
@@ -78,3 +94,26 @@ String removeId = wp.createId();
         });
     })(window, jQuery);
 </script>
+<%} else {%>
+
+<script type="text/javascript">
+    if (typeof jQuery !== 'undefined') (function(win, $) {
+        var $win = $(win),
+                $page = $('#<%= pageId %>');
+
+        $page.delegate('#<%=wp.getId()%>', 'click', function() {
+
+            var $source = $page.popup('source'),
+                    $input = $source.parent().find(':input.objectId');
+
+            $input.attr('data-label', "<%=search.toQuery().getPredicate().toString()%>");
+            $input.val("<%=search.toQuery().getPredicate().toString()%>");
+            $input.change();
+
+            $page.popup('close');
+            return false;
+        });
+    })(window, jQuery);
+</script>
+
+<%}%>
